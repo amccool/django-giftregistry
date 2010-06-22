@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<p>
+	
+	
+	
+	<table class="partbox" cellspacing="0" cellpadding="2">
+		<tr class="partboxtitle">
+			<td colspan="4" align="center">Ranks</td>
+		</tr>
+		<tr>
+			<th class="colheader">Title</th>
+			<th class="colheader">Rendered HTML</th>
+			<th class="colheader">Rank Order</th>
+		</tr>
+		{% for rank in ranks %}
+			<tr class="{% cycle 'evenrow' 'oddrow' %}">
+				<td>{{ rank.title }}</td>
+				<td>{{ rank.rendered }}</td>
+				<td>{{ rank.rankorder }}</td>
+				<td align="right">
+					<a href="rank/edit/{{ rank.id }}">Edit</a>
+					/
+					<a href="rank/delete/{{ rank.id }}">Delete</a>
+					/
+					<a href="rank/promote/{{ rank.id }}">Promote</a>
+					/
+					<a href="rank/demote/{{ rank.id }}">Demote</a>
+				</td>
+			</tr>
+			{% endfor %}
+	</table>
+</p>
+<p>
+	<a href="rank/add">Add a new rank</a> / <a href="/">Back to main</a>
+</p>
+<form method="post" action="">
+    <table>
+	{{ formset.as_table }}
+	</table>
+	<input type="submit" value="Add Rank">
+</form>
+
+
+<!-- a place holder for the grid. requires the unique id to be passed in the javascript function, and width and height ! --> 
+<div id="example-grid"></div>
+	
+	<script type="text/javascript" language="JavaScript">
+		var rankData = eval('('{{ rankData }}')');
+		
+var proxy=new Ext.data.HttpProxy(    {url:'survey.html'});
+	
+		  var reader=new Ext.data.JsonReader(
+			{
+			},[
+				{name: 'appeId', mapping: 'appeId'},
+				{name: 'survId'},            
+				{name: 'location'}, 
+				{name: 'surveyDate'},
+				{name: 'surveyTime'},
+				{name: 'inputUserId'}           
+			]
+		)
+	  
+		var store=new Ext.data.Store(    {
+		  proxy:proxy,
+		  reader:reader
+	   });
+	
+	store.load();
+
+
+    // create the grid
+    var grid = new Ext.grid.GridPanel({
+        store: store,
+        columns: [
+            {header: "appeId", width: 60, dataIndex: 'appeId', sortable: true},
+            {header: "survId", width: 60, dataIndex: 'survId', sortable: true},
+            {header: "location", width: 60, dataIndex: 'location', sortable: true},
+            {header: "surveyDate", width: 100, dataIndex: 'surveyDate', sortable: true},
+            {header: "surveyTime", width: 100, dataIndex: 'surveyTime', sortable: true},
+            {header: "inputUserId", width:80, dataIndex: 'inputUserId', sortable: true}
+        ],
+        renderTo:'example-grid',
+        width:540,
+        height:200
+    });
+		
+		
+	</script>
+	
+	
+{% endblock %}

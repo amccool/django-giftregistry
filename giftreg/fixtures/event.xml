@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object pk="1" model="giftreg.events">
+        <field type="IntegerField" name="userid">
+            <None>
+            </None>
+        </field>
+        <field type="CharField" name="description">
+            Christmas
+        </field>
+        <field type="DateField" name="eventdate">
+            2000-12-25
+        </field>
+        <field type="IntegerField" name="recurring">
+            1
+        </field>
+    </object>
+</django-objects>

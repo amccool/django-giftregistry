@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/bbvnsp/djangoGiftReg/svn/!svn/ver/7/giftReg/templates/registration
+END
+login.html
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/login.html
+END
+password_reset_email.html
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_reset_email.html
+END
+password_reset_form.html
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_reset_form.html
+END
+activation_email_subject.txt
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/activation_email_subject.txt
+END
+password_reset_done.html
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_reset_done.html
+END
+activation_email.txt
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/activation_email.txt
+END
+activate.html
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/activate.html
+END
+registration_complete.html
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/registration_complete.html
+END
+password_change_form.html
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_change_form.html
+END
+password_change_done.html
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_change_done.html
+END
+password_reset_complete.html
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_reset_complete.html
+END
+password_reset_confirm.html
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/password_reset_confirm.html
+END
+registration_form.html
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/registration_form.html
+END
+logout.html
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/bbvnsp/djangoGiftReg/svn/!svn/ver/9/giftReg/templates/registration/logout.html
+END

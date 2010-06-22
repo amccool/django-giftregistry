@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+        <script language="JavaScript" type="text/javascript">
+            function confirmUnshop(fullname){
+                return window.confirm("Are you sure you no longer wish to shop for " + fullname + "?");
+            }
+            
+            function confirmItemDelete(desc){
+                return window.confirm("Are you sure you want to delete " + desc + "?");
+            }
+			function expandingHelp(helpPane)
+			{
+				jQuery(helpPane).children().show();
+			}
+        </script>
+        <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;">
+        </div>
+        <span class="message"> {{ message }} </span>
+        <p>
+        	<div id="HelpPane" onmouseover="expandingHelp(this);">
+        		Click here to see the help
+            <div class="helptext" style="display: none;">
+                <ul>
+                    <li>
+                        You can click the column headers to sort by that attribute.
+                    </li>
+                    <li>
+                        List each item seperately on your list - do not combine items. (i.e. list each book of a 4-part series separately.)
+                    </li>
+                    <li>
+                        Once you've bought or decided not to buy an item, remember to return to the recipient's gift lists and mark it accordingly.
+                    </li>
+                    <li>
+                        If someone purchases an item on your list, click <img src="/static/images/refresh_nav.gif" />to mark it as received.
+                    </li>
+                </ul>
+            </div>
+			</div>
+        </p>
+        <table border="1" cellpadding="10" cellspacing="5" width="100%">
+            <tr valign="top">
+                <td colspan="2">
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0">
+                            <tr class="partboxtitle">
+                                <td colspan="5" align="center">
+                                    Gifts I'm asking for
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    <span id="mysort_description">Description</span>
+                                </th>
+                                <th class="colheader">
+                                    <span id="mysort_ranking">Ranking</span>
+                                </th>
+                                <th class="colheader">
+                                    <span id="mysort_category">Category</span>
+                                </th>
+                                <th class="rcolheader">
+                                    <span id="mysort_price">Price</span>
+                                </th>
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                            {% for myitem in items %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}" valign="top">
+                                <td>
+                                    {{ myitem.description }}
+									<a href="item/{{ myitem.id }}" target="_blank">
+										<img src="/static/images/links_view.gif" border="0" alt="URL" title="URL">
+										{{myitem.comment}}
+										
+										<img src="/static/images/topic.gif" border="0" alt="{{ myitem.comment }}">
+										<img src="{{myitem.image_subdir}}/{{myitem.image_filename}}">
+										<img src="/static/images/image_obj.gif" border="0" alt="Image">
+											</a>
+                                </td>
+                                <td nowrap>
+                                </td>
+                                <td>
+                                    {{myitem.category}}
+                                </td>
+                                <td align="right">
+                                    {{myitem.price}}
+                                </td>
+                                <td align="right">
+                                    <a href="receive/{{myitem.itemid}}"><img alt="Mark Item Received" src="/static/images/refresh_nav.gif" border="0" title="Mark Item Received"></a>&nbsp;<a href="item.php?action=edit&itemid=<?php echo $itemid; ?>"><img alt="Edit Item" src="images/write_obj.gif" border="0" title="Edit Item"></a>&nbsp;<a href="/delete/{{myitem.itemid}}" onClick=\"return confirmItemDelete('{{myitem.description}}');\><img alt="Delete Item" src="images/remove.gif" border="0"  alt="Delete" title="Delete Item"></a>&nbsp;
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tr>
+                                <td colspan="5" align="center" class="partboxtitle">
+                                    Page:<a class="pagercell" href="item/{{ pagenum }}"></a>&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+                    <p>
+                        <a href="item/add">Add a new item</a>
+                    </p>
+                </td>
+            </tr>
+            <tr valign="top">
+                <td width="50%">
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0" border="1">
+                            <tr class="partboxtitle">
+                                <td colspan="4" align="center">
+                                    People I'm shopping for
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    Name
+                                </th>
+                                <th class="rcolheader">
+                                    Last Updated
+                                </th>
+                                <th class="rcolheader">
+                                    # Items
+                                </th>
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                            {% for ppl in peopleImShoppingFor %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}">
+                                <td>
+                                    <a href="shop/{{ ppl.userid }}">{{ ppl.fullname }}
+                                    {{ ppl.comment }}<img src="/static/images/view.gif" alt="{{ ppl.comment }}" border="0"></a>
+                                </td>
+                                <td align="right">
+                                    {{ ppl.list_stamp }}
+                                </td>
+                                <td align="right">
+                                    {{ ppl.itemcount }}
+                                </td>
+                                <td align="right">
+                                    <a href="shop/{{ ppl.userid }}"><img alt="Shop for {{ ppl.fullname }}" src="/static/images/tasks_tsk.gif" border="0" alt="Shop" title="Shop"></a>&nbsp;<a href="//cancel/{{ ppl.userid }}" onClick="return confirmUnshop('{{ ppl.fullname }}')"><img src="/static/images/remove.gif" border="0" alt="Don't shop for {{ ppl.fullname }} anymore" title="Don't shop for {{ ppl.fullname }} anymore"></a>
+                                </td>
+                            </tr>{% endfor %}
+                        </table>
+                    </p>
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0">
+                            <tr class="partboxtitle">
+                                <td colspan="2" align="center">
+                                    People I'm <i>not</i>
+                                    shopping for
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    Name
+                                </th>
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                            {% for ppl in peopleImNotShoppingFor %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}">
+                                <td>
+                                    {{ ppl.fullname }}
+                                </td>
+                                <td align="right">
+                                    {% if ppl.pending %}<a href="shopper/cancel{{ ppl.userid}}">Cancel</a>
+                                    {% else %}<a href="shopper/request/{{ ppl.userid }}">Request</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </p>
+                </td>
+                <td width="50%">
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0">
+                            <tr class="partboxtitle">
+                                <td colspan="4" align="center">
+                                    Messages
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    Date
+                                </th>
+                                <th class="colheader">
+                                    Sender
+                                </th>
+                                <th class="colheader">
+                                    Message
+                                </th>
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                            {% for msg in messages %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}" valign="top">
+                                <td>
+                                    {{ msg.created }}
+                                </td>
+                                <td>
+                                    {{ msg.fullname }}
+                                </td>
+                                <td>
+                                    {{ msg.message }}
+                                </td>
+                                <td align="right">
+                                    <a href="message/ack/{{ msg.messageid }}"><img alt="Acknowledge" title="Acknowledge" src="/static/images/step_done.gif" border="0"></a>
+                                </td>
+                            </tr>{% endfor %}
+                            <tr>
+                                <td colspan="4">
+                                    <a href="message">Send a message</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0">
+                            <tr class="partboxtitle">
+                                <td colspan="4" align="center">
+                                    Upcoming events (within {{ event_threshold_int_days }} days)
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    Name
+                                </th>
+                                <th class="colheader">
+                                    Event
+                                </th>
+                                <th class="colheader">
+                                    Date
+                                </th>
+                                <th class="colheader">
+                                    Days left
+                                </th>
+                            </tr>
+                            {% for event in events %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}" valign="top">
+                                <td>
+                                    {{ event.name }}
+                                </td>
+                                <td>
+                                    {{ event.event }}
+                                </td>
+                                <td>
+                                    {{ event.date }}
+                                </td>
+                                <td>
+                                    {{ event.daysuntil }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </p>
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0">
+                            <tr class="partboxtitle">
+                                <td colspan="2" align="center">
+                                    People who want to shop for me
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    Name
+                                </th>
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                            {% for ppl  in peopleWhoWantToShopForMe %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}">
+                                <td>
+                                    {{ ppl.fullname }}
+                                </td>
+                                <td align="right">
+                                    <a href="index/approve/{{ ppl.userid}}">Approve</a>&nbsp;/<a href="index/decline/{{ ppl.userid}}>">Decline</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </p>
+                    <p>
+                        <table class="partbox" width="100%" cellspacing="0">
+                            <tr class="partboxtitle">
+                                <td colspan="3" align="center">
+                                    People waiting for approval
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="colheader">
+                                    Name
+                                </th>
+                                <th class="colheader">
+                                    Family
+                                </th>
+                                <th>
+                                    &nbsp;
+                                </th>
+                            </tr>
+                            {% for ppl  in peopleWaitingApproval %}
+                            <tr class="{% cycle 'evenrow' 'oddrow' %}">
+                                <td>
+                                    {{ ppl.fullname }}
+                                    &lt;<a href="mailto/{{ ppl.userid }}"></a>&gt;
+                                </td>
+                                <td>
+                                    {{ ppl.familyname }}
+                                </td>
+                                <td align="right">
+                                    <a href="family/approve/{{ ppl.userid}}/family/{{ ppl.initialfamilyid }}">Approve</a>&nbsp;/<a href="family/reject/{{ ppl.userid }}">Reject</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </p>
+                    <?php
+			}
+			?>
+                </td>
+            </tr>
+        </table>
+        <p align="center">
+            <a href="shoppinglist">My Shopping List</a>&nbsp;/&nbsp;<a href="mylist">My Items (printable)</a>
+        </p>
+		<p align="center">
+            / <a href="event">Manage Family Events</a>
+            / <a href="families">Manage Families</a>
+		</p>
+		<p align="center">
+            / <a href="users">Manage Users</a>
+            / <a href="categories">Manage Categories</a>
+            / <a href="ranks">Manage Ranks</a>
+            
+        </p>
+        <p align="center">
+            <a href="/index">Refresh</a>&nbsp;/&nbsp;<a href="/accounts/logout">Logout</a>
+        </p>
+{% endblock %}
+
