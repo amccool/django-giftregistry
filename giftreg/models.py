@@ -8,37 +8,37 @@
 # into your database.
 
 from django.db import models
-from django.contrib.auth import authenticate
+#from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from django import forms
+#from django import forms
 
 
 
 
 
-class DjangoContentType(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=300)
-    # app_label = models.CharField(unique=True, max_length=300)
-    app_label = models.CharField(unique=True, max_length=255)
-    # model = models.CharField(unique=True, max_length=300)
-    model = models.CharField(unique=True, max_length=255)
-    class Meta:
-        db_table = u'django_content_type'
-
-class DjangoSession(models.Model):
-    session_key = models.CharField(max_length=120, primary_key=True)
-    session_data = models.TextField()
-    expire_date = models.DateTimeField()
-    class Meta:
-        db_table = u'django_session'
-
-class DjangoSite(models.Model):
-    id = models.IntegerField(primary_key=True)
-    domain = models.CharField(max_length=300)
-    name = models.CharField(max_length=150)
-    class Meta:
-        db_table = u'django_site'
+#class DjangoContentType(models.Model):
+#    id = models.IntegerField(primary_key=True)
+#    name = models.CharField(max_length=300)
+#    # app_label = models.CharField(unique=True, max_length=300)
+#    app_label = models.CharField(unique=True, max_length=255)
+#    # model = models.CharField(unique=True, max_length=300)
+#    model = models.CharField(unique=True, max_length=255)
+#    class Meta:
+#        db_table = u'django_content_type'
+#
+#class DjangoSession(models.Model):
+#    session_key = models.CharField(max_length=120, primary_key=True)
+#    session_data = models.TextField()
+#    expire_date = models.DateTimeField()
+#    class Meta:
+#        db_table = u'django_session'
+#
+#class DjangoSite(models.Model):
+#    id = models.IntegerField(primary_key=True)
+#    domain = models.CharField(max_length=300)
+#    name = models.CharField(max_length=150)
+#    class Meta:
+#        db_table = u'django_site'
 
 
 
