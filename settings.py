@@ -1,5 +1,9 @@
 # Django settings for giftReg project.
 
+
+import os.path
+
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -42,6 +46,9 @@ MEDIA_ROOT = ''
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = ''
 
+STATIC_DOC_ROOT = os.path.join(os.path.dirname(__file__), 'static').replace('\\','/')
+
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -62,11 +69,12 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 )
 
-ROOT_URLCONF = 'giftReg.urls'
+#ROOT_URLCONF = 'giftreg.urls'
+ROOT_URLCONF = 'urls'
 
-import os.path
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -146,7 +154,13 @@ DAJAXICE_FUNCTIONS = (
 DAJAXICE_MEDIA_PREFIX="dajaxice" # Will create http://yourdomain.com/dajaxice/.
 
 
-
+ACCOUNT_ACTIVATION_DAYS=7
+EMAIL_HOST='cindy'
+DEFAULT_FROM_EMAIL = 'giftregistry@giftregistry.org'
+LOGIN_REDIRECT_URL = '/giftReg'
+#EMAIL_PORT=1023
+#EMAIL_HOST_USER='username'
+#EMAIL_HOST_PASSWORD='password'
 
 
 

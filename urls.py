@@ -10,7 +10,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
-    (r'^giftReg/', include('giftReg.giftreg.urls')),
+    (r'^giftReg/', include('giftreg.urls')),
     
     (r'^$', views.index),
     
@@ -32,5 +32,5 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     
     
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': 'static'}),    
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT}),    
 )
