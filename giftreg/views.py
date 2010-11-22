@@ -2,17 +2,18 @@
 #from django.template.loader import get_template
 #from django.template import Template, Context
 #from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from django.forms.models import modelformset_factory
 from django.template import RequestContext
+from django.contrib.auth.decorators import permission_required
 
 from django.core import serializers
-
-
 import models
+import forms
+
 
 @login_required
 def index(request):
@@ -44,6 +45,23 @@ def index(request):
 
 @login_required
 def itemAdd(request):
+    
+    if request.method == 'POST':
+        form = forms.ItemAddModelForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+#            send_mail(
+#                cd['subject'],
+#                cd['message'],
+#                cd.get('email', 'noreply@example.com'),
+#                ['siteowner@example.com'],
+#            )
+            return HttpResponseRedirect('/contact/thanks/')
+    else:
+        form = forms.ItemAddModelForm()
+    return render_to_response('itemAdd.html', {'form': form})
+    
+    
      
     #full_name = request.user.get_full_name()
     messages = models.Message.objects.all()
@@ -67,20 +85,15 @@ def itemAdd(request):
 
 
 
-
-
-
-
-
-
-
-
-@login_required
+#@login_required
+@permission_required('giftReg.category')
 def categories(request):
     CategoriesFormSet = modelformset_factory(models.Category)
     if request.method == 'POST':
         formset = CategoriesFormSet(request.POST)
-        formset.save()
+        if formset.is_valid():
+            formset.save()
+            return redirect('giftReg/categories')
     else:
         formset = CategoriesFormSet()
     categories = models.Category.objects.all()
@@ -90,14 +103,66 @@ def categories(request):
 
 #from django.utils import simplejson
 
-@login_required
+#@login_required
+@permission_required('giftReg.rank')
 def ranks(request):
+    #rankData = serializers.serialize('json', models.Rank.objects.all())
+    #simplejson.dumps(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default)
+    RankFormSet = modelformset_factory(models.Rank)
+    if request.method == 'POST':
+        formset = RankFormSet(request.POST)
+        formset.save()
+    else:
+        formset = RankFormSet()
+    ranks = models.Rank.objects.order_by('rankorder')
+    return render_to_response('ranks.html', {'ranks' : ranks,
+                                             'formset' : formset },
+                                             context_instance=RequestContext(request))
 
+
+
+
+
+#@login_required
+@permission_required('giftReg.rank')
+def rankAdd(request):
+    if request.method == 'POST':
+        form = forms.RankForm(request.POST)
+        if form.is_valid():
+            new_rank = form.save()
+            return redirect('/giftReg/ranks')
+    else:
+        form = forms.RankForm()
+    return render_to_response('rankEdit.html', {'form' : form },
+                                             context_instance=RequestContext(request))
+
+#@login_required
+@permission_required('giftReg.rank')
+def rankEdit(request, rankid):
+    if request.method == 'POST':
+        rank = models.Rank.objects.get(pk=rankid)
+        form = forms.RankForm(request.POST, instance=rank)
+        if form.is_valid():
+            new_rank = form.save()
+            return redirect('/giftReg/ranks')
+    else:
+        rank = models.Rank.objects.get(pk=rankid)
+        form = forms.RankForm(instance=rank)
+    return render_to_response('rankEdit.html', {'form' : form },
+                                             context_instance=RequestContext(request))
+    
+#@login_required
+@permission_required('giftReg.rank')
+def rankDelete(request, rankid):
+    rank = models.Rank.objects.filter(rankid=rankid)
+    rank.delete()
+    return redirect('/giftReg/ranks')
+
+#@login_required
+@permission_required('giftReg.rank')
+def rankPromote(request, rankid):
     rankData = serializers.serialize('json', models.Rank.objects.all())
-
-#simplejson.dumps(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default)
-    
-    
+    #simplejson.dumps(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default)
     RankFormSet = modelformset_factory(models.Rank)
     if request.method == 'POST':
         formset = RankFormSet(request.POST)
@@ -110,5 +175,85 @@ def ranks(request):
                                              'formset' : formset },
                                              context_instance=RequestContext(request))
 
+
+#@login_required
+@permission_required('giftReg.rank')
+def rankDemote(request, rankid):
+    rankData = serializers.serialize('json', models.Rank.objects.all())
+    #simplejson.dumps(obj, skipkeys, ensure_ascii, check_circular, allow_nan, cls, indent, separators, encoding, default)
+    RankFormSet = modelformset_factory(models.Rank)
+    if request.method == 'POST':
+        formset = RankFormSet(request.POST)
+        formset.save()
+    else:
+        formset = RankFormSet()
+    ranks = models.Rank.objects.all()
+    return render_to_response('ranks.html', {'rankData' : rankData ,
+                                             'ranks' : ranks,
+                                             'formset' : formset },
+                                             context_instance=RequestContext(request))
+
+
+
+
+
+
+
+
+
+
+
+
+@login_required
+def shoppinglist(request):
+    ShoppingListFormSet = modelformset_factory(models.Item)
+    if request.method == 'POST':
+        formset = ShoppingListFormSet(request.POST)
+        formset.save()
+    else:
+        formset = ShoppingListFormSet()
+    items = models.Item.objects.all()
+    return render_to_response('shoplist.html', {'items' : items,
+                                             'formset' : formset },
+                                             context_instance=RequestContext(request))
+        
+@login_required
+def mylist(request):
+    MyListFormSet = modelformset_factory(models.Item)
+    if request.method == 'POST':
+        formset = MyListFormSet(request.POST)
+        formset.save()
+    else:
+        formset = MyListFormSet()
+    items = models.Rank.Item.all()
+    return render_to_response('mylist.html', {'items' : items,
+                                             'formset' : formset },
+                                             context_instance=RequestContext(request))
+
+@login_required
+def event(request):
+    EventFormSet = modelformset_factory(models.Event)
+    if request.method == 'POST':
+        formset = EventFormSet(request.POST)
+        formset.save()
+    else:
+        formset = EventFormSet()
+    events = models.Event.objects.all()
+    return render_to_response('event.html', {'events' : events,
+                                             'formset' : formset },
+                                             context_instance=RequestContext(request))
+        
+@login_required
+def families(request):
+    FamilyFormSet = modelformset_factory(models.Family)
+    if request.method == 'POST':
+        formset = FamilyFormSet(request.POST)
+        formset.save()
+    else:
+        formset = FamilyFormSet()
+    families = models.Family.objects.all()
+    return render_to_response('families.html', {'families' : families,
+                                             'formset' : formset },
+                                             context_instance=RequestContext(request))
 
 

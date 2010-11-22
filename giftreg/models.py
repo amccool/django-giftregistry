@@ -51,7 +51,9 @@ class Category(models.Model):
     CategoryName = models.CharField(max_length=150, blank=True)
 #    class Meta:
 #        db_table = u'Category'
-
+    def __unicode__(self):
+        return self.CategoryName
+    
 class Event(models.Model):
     #eventid = models.IntegerField(primary_key=True)
     #userid = models.IntegerField(null=True, blank=True)
@@ -78,6 +80,8 @@ class Rank(models.Model):
     rankorder = models.IntegerField()
 #    class Meta:
 #        db_table = u'Rank'
+    def __unicode__(self):
+        return self.title
 
 
 class Item(models.Model):
@@ -93,7 +97,7 @@ class Item(models.Model):
     comment = models.TextField(blank=True)
     quantity = models.IntegerField()
     #image_filename = models.CharField(max_length=765, blank=True)
-    Image = models.ImageField(upload_to='itemimage')
+    image = models.ImageField(upload_to='itemimage')
 #    class Meta:
 #        db_table = u'Item'
 

@@ -6,7 +6,12 @@
 		Here you can specify categories <strong>of your own</strong>, like &quot;Motorcycle stuff&quot; or &quot;Collectibles&quot;.  This will help you categorize your gifts.<br />
 		Warning: deleting a category will uncategorize all items that used that category.
 	</p>
+	
 <p>
+	
+	
+	
+	
 	
 	<table class="partbox" cellspacing="0" cellpadding="2">
 		<tr class="partboxtitle">
@@ -27,42 +32,11 @@
 			{% endfor %}
 	</table>
 </p>
-<!--
+
 <form method="post" action="">
     <table>
 	{{ formset.as_table }}
 	</table>
-	<input type="submit" value="Add/Edit Category">
-</form>
--->
-
-<form method="post" action="">{% csrf_token %}
-<table id="formset" class="form">
-{% for form in formset.forms %}
-  {# TODO: showing form.non_field_errors #}
-  {% if forloop.first %}
-  <thead><tr>
-    {% for field in form.visible_fields %}
-    <th>{{ field.label|capfirst }}</th>
-    {% endfor %}
-  </tr></thead>
-  {% endif %}
-  <tr class="{% cycle 'evenrow' 'oddrow' %}">
-  {% for field in form.visible_fields %}
-    <td>
-    {# Include the hidden fields in the form #}
-    {% if forloop.first %}
-      {% for hidden in form.hidden_fields %}
-      {{ hidden }}
-      {% endfor %}
-    {% endif %}
-      {{ field.errors.as_ul }}
-      {{ field }}
-    </td>
-  {% endfor %}
-  </tr>
-{% endfor %}
-</table>
-<input type="submit" value="Add/Edit Category">
+	<input type="submit" value="Add Category">
 </form>
 {% endblock %}

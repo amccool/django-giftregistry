@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'registration',
     'dajaxice',
+    #'profile',
 )
 
 

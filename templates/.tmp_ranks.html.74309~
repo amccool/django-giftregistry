@@ -1,13 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}Ranks
-{% endblock %}
-
 {% block content %}
 <p>
 	
-	<!--<input type="button" name="rand" value="Get message from server!" id="rand" onclick="Dajaxice.giftreg.dajaxice_example('my_callback')">-->
+	<input type="button" name="rand" value="Get message from server!" id="rand" onclick="Dajaxice.giftreg.dajaxice_example('my_callback')">
 	
 	<table class="partbox" cellspacing="0" cellpadding="2">
 		<tr class="partboxtitle">
@@ -39,14 +36,12 @@
 <p>
 	<a href="rank/add">Add a new rank</a> / <a href="/">Back to main</a>
 </p>
-<!--
 <form method="post" action="">
     <table>
 	{{ formset.as_table }}
 	</table>
 	<input type="submit" value="Add Rank">
 </form>
--->
 
 
 <!-- a place holder for the grid. requires the unique id to be passed in the javascript function, and width and height ! --> 
