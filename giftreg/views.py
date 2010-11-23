@@ -48,41 +48,23 @@ def itemAdd(request):
     
     if request.method == 'POST':
         form = forms.ItemAddModelForm(request.POST)
+        #form.User = request.user.id
         if form.is_valid():
-            cd = form.cleaned_data
+            inst = form.save(commit=False)
+            inst.User = models.User.objects.get(pk=request.user.id)
+            inst.save()
+            #            cd = form.cleaned_data
 #            send_mail(
 #                cd['subject'],
 #                cd['message'],
 #                cd.get('email', 'noreply@example.com'),
 #                ['siteowner@example.com'],
 #            )
-            return HttpResponseRedirect('/contact/thanks/')
+
+            return redirect('/')
     else:
         form = forms.ItemAddModelForm()
-    return render_to_response('itemAdd.html', {'form': form})
-    
-    
-     
-    #full_name = request.user.get_full_name()
-    messages = models.Message.objects.all()
-    itemsIWant = models.Item.objects.all()
-    peopleImShoppingFor = User.objects.all()
-    peopleImNotShoppingFor = User.objects.all()
-    event_threshold_int_days  = 90
-    events = models.Event.objects.all()
-    peopleWhoWantToShopForMe = User.objects.all()
-    peopleWaitingApproval = User.objects.all()
-    
-    return render_to_response('itemAdd.html', {'messages' : messages, 
-                                             'items' : itemsIWant, 
-                                             'peopleImShoppingFor' :peopleImShoppingFor,
-                                             'peopleImNotShoppingFor' : peopleImNotShoppingFor,
-                                             'event_threshold_int_days' :event_threshold_int_days,
-                                             'events' : events,
-                                             'peopleWhoWantToShopForMe' : peopleWhoWantToShopForMe,
-                                             'peopleWaitingApproval' : peopleWaitingApproval },
-                                             context_instance=RequestContext(request))
-
+    return render_to_response('itemAdd.html', {'form': form}, context_instance=RequestContext(request))
 
 
 #@login_required
@@ -218,16 +200,28 @@ def shoppinglist(request):
                                              context_instance=RequestContext(request))
         
 @login_required
-def mylist(request):
-    MyListFormSet = modelformset_factory(models.Item)
-    if request.method == 'POST':
-        formset = MyListFormSet(request.POST)
-        formset.save()
+def mylist(request, sortheader):
+    if not sortheader:
+        itemsIWant = models.Item.objects.filter(User=models.User.objects.get(pk=request.user.id))
     else:
-        formset = MyListFormSet()
-    items = models.Rank.Item.all()
-    return render_to_response('mylist.html', {'items' : items,
-                                             'formset' : formset },
+        itemsIWant = models.Item.objects.filter(User=models.User.objects.get(pk=request.user.id)).order_by(sortheader)
+    
+    numItems = 0
+    totalamount = 0;
+#    y, m = 2010, 10 
+#    clients = [] 
+#    for c in Client.objects.all():
+#        clients.append({'client':c, 'purchases':c.get_purchases_month(y, m)}
+    for x in itemsIWant:
+        numItems = numItems + x.quantity
+        x.total = x.price * x.quantity
+        totalamount = totalamount + x.total
+    return render_to_response('mylist.html', {
+                                              'numItems': numItems,
+                                              'totalamount': totalamount,
+                                              'CurrentUser' : request.user,
+                                              'items' : itemsIWant,
+                                             },
                                              context_instance=RequestContext(request))
 
 @login_required

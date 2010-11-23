@@ -21,7 +21,7 @@ urlpatterns = patterns(
     (r'^item/add/$', views.itemAdd),
 
     (r'^shoppinglist/$', views.shoppinglist),
-    (r'^mylist/$', views.mylist),
+    (r'^mylist/(?P<sortheader>\w*)$', views.mylist),
 
     (r'^event/$', views.event),
     (r'^families/$', views.families),

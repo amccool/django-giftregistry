@@ -10,6 +10,7 @@
 		<script language="JavaScript" type="text/javascript" src="/static/js/jquery-ui-1.7.2.custom.min.js"></script>
 		
 		{% dajaxice_js_import %}
+		{% block extraJS %}{% endblock %}
 </head>
 
 <body>
@@ -21,7 +22,7 @@
 	{% trans "Logged in" %}: {{ user.username }} 
 	(<a href="{% url auth_logout %}">{% trans "Log out" %}</a> | 
 	<a href="{% url auth_password_change %}">{% trans "Change password" %}</a> |
-	<a href="/accounts/profile">Update Profile</a>&nbsp;/&nbsp;)
+	<a href="/accounts/profile">Update Profile</a> )
 	{% else %}
 	<a href="{% url auth_login %}">{% trans "Log in" %}</a>
 	{% endif %}

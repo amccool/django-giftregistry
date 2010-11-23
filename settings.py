@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'registration',
     'dajaxice',
     #'profile',
+    'currencies',
 )
 
 
