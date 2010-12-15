@@ -24,7 +24,14 @@ urlpatterns = patterns(
     (r'^mylist/(?P<sortheader>\w*)$', views.mylist),
 
     (r'^event/$', views.event),
+    (r'^event/event/add$', views.eventAdd),
+    (r'^event/event/edit/(?P<eventid>\d+)$', views.eventEdit),
+    (r'^event/event/delete/(?P<eventid>\d+)$', views.eventDelete),
+    
     (r'^families/$', views.families),
+    (r'^families/family/add$', views.familyAdd),
+    (r'^families/family/edit/(?P<familyid>\d+)$', views.familyEdit),
+    (r'^families/family/delete/(?P<familyid>\d+)$', views.familyDelete),
 
     #handle users through the admin pages
     #(r'^users/$', views.users),

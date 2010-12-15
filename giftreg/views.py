@@ -10,6 +10,8 @@ from django.forms.models import modelformset_factory
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 
+from django.db.models import Avg, Max, Min, Count
+
 from django.core import serializers
 import models
 import forms
@@ -23,13 +25,17 @@ def index(request):
     
     #full_name = request.user.get_full_name()
     messages = models.Message.objects.all()
-    itemsIWant = models.Item.objects.all()
+    #itemsIWant = models.Item.objects.all()
+    itemsIWant = models.Item.objects.filter(User=models.User.objects.get(pk=request.user.id))
     peopleImShoppingFor = User.objects.all()
     peopleImNotShoppingFor = User.objects.all()
     event_threshold_int_days  = 90
     events = models.Event.objects.all()
     peopleWhoWantToShopForMe = User.objects.all()
     peopleWaitingApproval = User.objects.all()
+    numItems = 0
+    for x in itemsIWant:
+        numItems = numItems + x.quantity
     
     return render_to_response('index.html', {'messages' : messages, 
                                              'items' : itemsIWant, 
@@ -224,30 +230,124 @@ def mylist(request, sortheader):
                                              },
                                              context_instance=RequestContext(request))
 
+
+################################# Events ####################################
+
 @login_required
+@permission_required('giftReg.event')
 def event(request):
-    EventFormSet = modelformset_factory(models.Event)
-    if request.method == 'POST':
-        formset = EventFormSet(request.POST)
-        formset.save()
-    else:
-        formset = EventFormSet()
+#    EventFormSet = modelformset_factory(models.Event)
+#    if request.method == 'POST':
+#        formset = EventFormSet(request.POST)
+#        formset.save()
+#    else:
+#        formset = EventFormSet()
+
+    # we need to create
+    # system events --- for everyone (christmas, actuall holidays
+    # family events --- specific to a family
     events = models.Event.objects.all()
-    return render_to_response('event.html', {'events' : events,
-                                             'formset' : formset },
+    return render_to_response('event.html', {'events' : events, },
                                              context_instance=RequestContext(request))
-        
-@login_required
-def families(request):
-    FamilyFormSet = modelformset_factory(models.Family)
+
+
+
+#@login_required
+@permission_required('giftReg.event')
+def eventAdd(request):
     if request.method == 'POST':
-        formset = FamilyFormSet(request.POST)
-        formset.save()
+        form = forms.EventForm(request.POST)
+        if form.is_valid():
+            new_family = form.save()
+            return redirect('/giftReg/event')
     else:
-        formset = FamilyFormSet()
-    families = models.Family.objects.all()
-    return render_to_response('families.html', {'families' : families,
-                                             'formset' : formset },
+        form = forms.EventForm()
+    return render_to_response('eventEdit.html', {'form' : form },
                                              context_instance=RequestContext(request))
 
+#@login_required
+@permission_required('giftReg.event')
+def eventEdit(request, eventid):
+    if request.method == 'POST':
+        rank = models.Event.objects.get(pk=eventid)
+        form = forms.EventForm(request.POST, instance=rank)
+        if form.is_valid():
+            new_family = form.save()
+            return redirect('/giftReg/event')
+    else:
+        rank = models.Family.objects.get(pk=eventid)
+        form = forms.EventForm(instance=rank)
+    return render_to_response('eventEdit.html', {'form' : form },
+                                             context_instance=RequestContext(request))
+    
+#@login_required
+@permission_required('giftReg.event')
+def eventDelete(request, eventid):
+    event = models.Event.objects.filter(id=eventid)
+    event.delete()
+    return redirect('/giftReg/event')
+    
 
+
+
+
+
+
+
+
+
+
+
+###################### Families #################################################################
+
+@login_required
+@permission_required('giftReg.family')
+def families(request):
+#    FamilyFormSet = modelformset_factory(models.Family)
+#    if request.method == 'POST':
+#        formset = FamilyFormSet(request.POST)
+#        formset.save()
+#    else:
+#        formset = FamilyFormSet()
+    families = models.Family.objects.order_by('FamilyName').annotate(FamilyMemberCount=Count('FamilyMember'))
+    return render_to_response('families.html', {'families' : families, },
+                                             context_instance=RequestContext(request))
+    
+    
+    
+
+#@login_required
+@permission_required('giftReg.family')
+def familyAdd(request):
+    if request.method == 'POST':
+        form = forms.FamilyForm(request.POST)
+        if form.is_valid():
+            new_family = form.save()
+            return redirect('/giftReg/families')
+    else:
+        form = forms.FamilyForm()
+    return render_to_response('familyEdit.html', {'form' : form },
+                                             context_instance=RequestContext(request))
+
+#@login_required
+@permission_required('giftReg.family')
+def familyEdit(request, familyid):
+    if request.method == 'POST':
+        rank = models.Family.objects.get(pk=familyid)
+        form = forms.FamilyForm(request.POST, instance=rank)
+        if form.is_valid():
+            new_family = form.save()
+            return redirect('/giftReg/families')
+    else:
+        rank = models.Family.objects.get(pk=familyid)
+        form = forms.FamilyForm(instance=rank)
+    return render_to_response('familyEdit.html', {'form' : form },
+                                             context_instance=RequestContext(request))
+    
+#@login_required
+@permission_required('giftReg.family')
+def familyDelete(request, familyid):
+    family = models.Family.objects.filter(id=familyid)
+    family.delete()
+    return redirect('/giftReg/families')
+    

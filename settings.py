@@ -97,7 +97,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'registration',
     'dajaxice',
-    #'profile',
+    'profiles',
     'currencies',
 )
 
@@ -163,6 +163,8 @@ LOGIN_REDIRECT_URL = '/giftReg'
 #EMAIL_PORT=1023
 #EMAIL_HOST_USER='username'
 #EMAIL_HOST_PASSWORD='password'
+
+AUTH_PROFILE_MODULE = "giftreg.UserProfile"
 
 
 

@@ -22,7 +22,7 @@
 	{% trans "Logged in" %}: {{ user.username }} 
 	(<a href="{% url auth_logout %}">{% trans "Log out" %}</a> | 
 	<a href="{% url auth_password_change %}">{% trans "Change password" %}</a> |
-	<a href="/profiles/edit">Update Profile</a> )
+	<a href="/accounts/profile">Update Profile</a> )
 	{% else %}
 	<a href="{% url auth_login %}">{% trans "Log in" %}</a>
 	{% endif %}
@@ -36,7 +36,7 @@
 
     <div id="footer">
         {% block footer %}
-        {% include 'footer.html' %}
+        <hr />
         {% endblock %}
     </div>
 </body>

@@ -60,7 +60,7 @@ class Event(models.Model):
     User = models.ForeignKey(User)
     description = models.CharField(max_length=300)
     eventdate = models.DateField()
-    recurring = models.IntegerField()
+    recurring = models.BooleanField()
 #    class Meta:
 #        db_table = u'Event'
 
@@ -161,4 +161,24 @@ class Alloc(models.Model):
     quantity = models.IntegerField()
 #    class Meta:
 #        db_table = u'Alloc'
+
+
+
+'''
+User Profile Information
+'''
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, unique=True)
+    birthday = models.DateField(blank=True, null=True)
+
+
+
+
+
+
+
+
+
+
 

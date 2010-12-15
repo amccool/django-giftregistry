@@ -33,6 +33,31 @@ class RankForm(ModelForm):
 #        '''
 #        Constructor
 #        '''    
+
+
+class FamilyForm(ModelForm):
+    '''
+    classdocs
+    '''
+    class Meta:
+        model = models.Family
+
+#    def __init__(selfparams):
+#        '''
+#        Constructor
+#        '''   
+
+class EventForm(ModelForm):
+    '''
+    classdocs
+    '''
+    class Meta:
+        model = models.Event
+
+#    def __init__(selfparams):
+#        '''
+#        Constructor
+#        '''   
         
         
         
@@ -50,5 +75,30 @@ class ItemAddModelForm(ModelForm):
         
 class ItemAddForm(Form):
     Description = forms.CharField()
+    
+    
+    
+#class ProfileForm(ModelForm):
+#    def __init__(self, *args, **kwargs):
+#        super(ProfileForm, self).__init__(*args, **kwargs)
+#        try:
+#            self.fields['email'].initial = self.instance.user.email
+#        except User.DoesNotExist:
+#            pass
+#
+#    email = forms.EmailField(label="Primary email")
+#
+#    class Meta:
+#      model = model
+#
+#    def save(self, *args, **kwargs):
+#      """
+#      Update the primary email address on the related User object as well. 
+#      """
+#      u = self.instance.user
+#      u.email = self.cleaned_data['email']
+#      u.save()
+#      profile = super(ProfileForm, self).save(*args,**kwargs)
+#      return profile    
     
         

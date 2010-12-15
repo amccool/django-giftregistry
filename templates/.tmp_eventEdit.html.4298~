@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Edit Family
+{% endblock %}
+
+{% block content %}
+<p>
+
+<form method="post" action="">{% csrf_token %}
+    <table>
+	{{ form.as_table }}
+	</table>
+	<input type="submit" value="Add/Edit Family">
+</form>
+
+	
+{% endblock %}

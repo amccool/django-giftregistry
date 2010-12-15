@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block extraJS %}
+{% block content %}
         <script language="JavaScript" type="text/javascript">
             function confirmUnshop(fullname){
                 return window.confirm("Are you sure you no longer wish to shop for " + fullname + "?");
@@ -15,9 +15,6 @@
 				jQuery(helpPane).children().show();
 			}
         </script>
-{% endblock %}
-
-{% block content %}
         <div id="overDiv" style="position:absolute; visibility:hidden; z-index:1000;">
         </div>
         <span class="message"> {{ message }} </span>
@@ -72,23 +69,17 @@
                             {% for myitem in items %}
                             <tr class="{% cycle 'evenrow' 'oddrow' %}" valign="top">
                                 <td>
-                                    <a href="item/{{ myitem.id }}" target="_blank">{{ myitem.description }}</a>
-									
-									{% if myitem.url != "" %}
-										<a href="{{myitem.url}}" target="_blank">
-										<img src="/static/images/links_view.gif" border="0" alt="URL" title="URL" />
-										</a>
-									{% endif %}
+                                    {{ myitem.description }}
+									<a href="item/{{ myitem.id }}" target="_blank">
+										<img src="/static/images/links_view.gif" border="0" alt="URL" title="URL">
+										{{myitem.comment}}
 										
-									{% if myitem.comment != "" %}
 										<img src="/static/images/topic.gif" border="0" alt="{{ myitem.comment }}">
-									{% endif %}
-										
-									{% if myitem.image_filename != "" %}
 										<img src="{{myitem.image_subdir}}/{{myitem.image_filename}}">
-									{% endif %}
+										<img src="/static/images/image_obj.gif" border="0" alt="Image">
+											</a>
                                 </td>
-                                <td nowrap>{{ myitem.ranking.rendered|safe }}
+                                <td nowrap>
                                 </td>
                                 <td>
                                     {{myitem.category}}
@@ -97,15 +88,7 @@
                                     {{myitem.price}}
                                 </td>
                                 <td align="right">
-                                    <a href="receive/{{myitem.itemid}}">
-                                    	<img alt="Mark Item Received" src="/static/images/refresh_nav.gif" border="0" title="Mark Item Received">
-									</a>&nbsp;
-									<a href="edit/{{myitem.itemid}}">
-										<img alt="Edit Item" src="/static/images/write_obj.gif" border="0" title="Edit Item">
-									</a>&nbsp;
-									<a href="delete/{{myitem.itemid}}" onClick="return confirmItemDelete('{{myitem.description}}');" \>
-										<img alt="Delete Item" src="/static/images/remove.gif" border="0" alt="Delete" title="Delete Item">
-									</a>
+                                    <a href="receive/{{myitem.itemid}}"><img alt="Mark Item Received" src="/static/images/refresh_nav.gif" border="0" title="Mark Item Received"></a>&nbsp;<a href="item.php?action=edit&itemid=<?php echo $itemid; ?>"><img alt="Edit Item" src="images/write_obj.gif" border="0" title="Edit Item"></a>&nbsp;<a href="/delete/{{myitem.itemid}}" onClick=\"return confirmItemDelete('{{myitem.description}}');\><img alt="Delete Item" src="images/remove.gif" border="0"  alt="Delete" title="Delete Item"></a>&nbsp;
                                 </td>
                             </tr>
                             {% endfor %}
@@ -357,8 +340,7 @@
             
         </p>
         <p align="center">
-            <a href="/">Refresh</a>
-			/ <a href="/accounts/logout">Logout</a>
+            <a href="/index">Refresh</a>&nbsp;/&nbsp;<a href="/accounts/logout">Logout</a>
         </p>
 {% endblock %}
 

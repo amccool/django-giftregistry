@@ -3,6 +3,7 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 
 import views
+#import giftreg.forms.ProfileForm
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,8 +19,10 @@ urlpatterns = patterns('',
     # auth
     #(r'^accounts/', include('registration.backends.default.urls')),    
     (r'^accounts/', include('registration.urls')),
-    #(r'^accounts/login/$', login),
-    #(r'^accounts/logout/$', logout),    
+    #(r'^profiles/', include('profiles.urls')),
+    # First match /profiles/edit before django-profiles gets it so we can pass in our custom form object.
+    #(r'^profiles/edit', 'profiles.views.edit_profile', {'form_class': giftreg.forms.ProfileForm,}),
+    (r'^profiles/', include('profiles.urls')),
     
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
     

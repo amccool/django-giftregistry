@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% comment %}
+{% load currencies.context_processors.currencies %}
+{% endcomment %}
+
+{% block title %}My List{% endblock %}
+{% block extraJS %}
+<script language="JavaScript"> 
+	function printPage() {
+		window.print();
+	}
+</script> 
+{% endblock %}
+{% block content %}
+
+<p class="pagetitle">Gift Registry - Wish List for {{ CurrentUser.first_name }} {{ CurrentUser.last_name }}</p>
+
+	<p>
+		<div class="helptext">
+			<ul>
+				<li>You can click the column headers to sort by that attribute.</li>
+				<li>Once you've bought or decided not to buy an item, remember to return to the recipient's gift lists and mark it accordingly.</li>
+				<li><strong>Please login to the Gift Registry site to get the most recent version of this list.</strong></li>
+				<li>For better printing results, please change your print orientation to "Landscape" mode.</li>
+			</ul>
+		</div>
+	</p>
+<p>
+	<table class="partbox" width="100%" cellspacing="0">
+		<tr>
+			<th class="colheader"><a href="ranking">Ranking</a></th>
+			<th class="colheader"><a href="source">Buy it here</a></th>
+			<th class="colheader"><a href="description">Description</a></th>
+			<th class="colheader"><a href="category">Category</a></th>
+			<th class="rcolheader"><a href="price">Price</a></th>
+		</tr>
+
+    {% for myitem in items %}
+            <tr class="{% cycle 'evenrow' 'oddrow' %}">
+
+			<!--<tr class="<?php echo (!($i++ % 2)) ? "evenrow" : "oddrow" ?>">-->
+				<td nowrap>{{ myitem.ranking.rendered|safe }}</td>
+				<td>{{ myitem.source }}</td>
+				<td>{{ myitem.description }}</td>
+				<td nowrap>{{ myitem.category }}</td>
+				<td align="right">
+					{% if myitem.quantity == 1 %}
+						{{ myitem.price }}
+					{% else %}
+						{{ myitem.quantity }} &nbsp;@&nbsp; {{ myitem.price }} &nbsp;=&nbsp; {{ myitem.total }}
+					{% endif %}
+				</td>
+			</tr>
+			{% if myitem.comment != "" %}
+				<tr class="{% cycle 'evenrow' 'oddrow' %}">
+					<td>&nbsp;</td>
+					<td colspan="3">
+						<i>{{ myitem.comment }}</i>
+					</td>
+					<td>&nbsp;</td>
+				</tr>
+			{% endif %}
+	{% endfor %}
+	</table>
+</p>
+<p align="right">
+	{{ numItems }} item(s), ${{ totalamount }} total.
+</p>
+
+<p align="center">
+	<a onClick="printPage()" href="#">Send to printer</a>&nbsp;/&nbsp;<a href="/">Back to Main</a>
+</p>
+{% endblock %}
