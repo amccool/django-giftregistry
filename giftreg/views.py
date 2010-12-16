@@ -13,6 +13,8 @@ from django.contrib.auth.decorators import permission_required
 from django.db.models import Avg, Max, Min, Count
 
 from django.core import serializers
+
+import datetime
 import models
 import forms
 
@@ -24,15 +26,27 @@ def index(request):
     #return HttpResponse(html)
     
     #full_name = request.user.get_full_name()
-    messages = models.Message.objects.all()
+    messages = models.Message.objects.filter(recipient=models.User.objects.get(pk=request.user.id))
     #itemsIWant = models.Item.objects.all()
     itemsIWant = models.Item.objects.filter(User=models.User.objects.get(pk=request.user.id))
-    peopleImShoppingFor = User.objects.all()
-    peopleImNotShoppingFor = User.objects.all()
+
+    # filter by:
+    #    date
+    #    system
+    #    family
     event_threshold_int_days  = 90
-    events = models.Event.objects.all()
+    events = models.Event.objects.filter(eventdate__gt = (datetime.date.today() + datetime.timedelta(days=-event_threshold_int_days)))
+    #   .filter(Family = 
+
+
+
+    
+    peopleImShoppingFor = models.Shopper.objects.filter()
+    peopleImNotShoppingFor = User.objects.all()
+    
     peopleWhoWantToShopForMe = User.objects.all()
     peopleWaitingApproval = User.objects.all()
+    
     numItems = 0
     for x in itemsIWant:
         numItems = numItems + x.quantity

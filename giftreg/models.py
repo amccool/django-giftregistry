@@ -14,37 +14,6 @@ from django.contrib.auth.models import User
 
 
 
-
-
-#class DjangoContentType(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    name = models.CharField(max_length=300)
-#    # app_label = models.CharField(unique=True, max_length=300)
-#    app_label = models.CharField(unique=True, max_length=255)
-#    # model = models.CharField(unique=True, max_length=300)
-#    model = models.CharField(unique=True, max_length=255)
-#    class Meta:
-#        db_table = u'django_content_type'
-#
-#class DjangoSession(models.Model):
-#    session_key = models.CharField(max_length=120, primary_key=True)
-#    session_data = models.TextField()
-#    expire_date = models.DateTimeField()
-#    class Meta:
-#        db_table = u'django_session'
-#
-#class DjangoSite(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    domain = models.CharField(max_length=300)
-#    name = models.CharField(max_length=150)
-#    class Meta:
-#        db_table = u'django_site'
-
-
-
-
-
-
 class Category(models.Model):
     #categoryid = models.IntegerField(primary_key=True)
     #categoryid = models.IntegerField()
@@ -53,23 +22,25 @@ class Category(models.Model):
 #        db_table = u'Category'
     def __unicode__(self):
         return self.CategoryName
-    
-class Event(models.Model):
-    #eventid = models.IntegerField(primary_key=True)
-    #userid = models.IntegerField(null=True, blank=True)
-    User = models.ForeignKey(User)
-    description = models.CharField(max_length=300)
-    eventdate = models.DateField()
-    recurring = models.BooleanField()
-#    class Meta:
-#        db_table = u'Event'
 
 class Family(models.Model):
     #familyid = models.IntegerField(primary_key=True)
     FamilyName = models.CharField(max_length=765)
     FamilyMember = models.ManyToManyField(User)
 #    class Meta:
-#        db_table = u'Family'
+#        db_table = u'Family'    
+
+class Event(models.Model):
+    #eventid = models.IntegerField(primary_key=True)
+    #userid = models.IntegerField(null=True, blank=True)
+    User = models.ForeignKey(User)
+    Family = models.ForeignKey(Family)
+    description = models.CharField(max_length=300)
+    eventdate = models.DateField()
+    recurring = models.BooleanField()
+#    class Meta:
+#        db_table = u'Event'
+
 
 
 class Rank(models.Model):
@@ -116,10 +87,11 @@ class Message(models.Model):
 
 
 class Shopper(models.Model):
-    #shopper = models.IntegerField(primary_key=True)
+    shopperUser = models.ForeignKey(User, related_name='shopperUser')
     #mayshopfor = models.IntegerField(primary_key=True)
-    mayshopfor = models.ForeignKey('self')
-    pending = models.IntegerField()
+    #mayshopfor = models.ForeignKey('self')
+    mayshopfor = models.ForeignKey(User, related_name='mayshopfor')
+    pending = models.BooleanField()
 #    class Meta:
 #        db_table = u'Shopper'
 
