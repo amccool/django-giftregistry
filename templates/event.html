@@ -6,13 +6,13 @@
 {% block content %}
 <p>
 	<p class="helptext">
-		Here you can specify events <strong>of your own</strong>, like your birthday or your anniversary.  When the event occurs within <?php echo $OPT["event_threshold"]; ?> days, an event reminder will appear in the display of everyone who shops for you.
-		<?php if ($_SESSION["admin"] == 1) echo "<strong>System events</strong> are events which belong to no one -- like Christmas -- and will appear on everyone's display."; ?>
+		Here you can specify events 
+		<strong>of your own</strong>, 
+		like your birthday or your anniversary.  
+		When the event occurs within {{ event_threshold }} days, an event reminder will appear in the display of everyone who shops for you.
+		<strong>System events</strong> are events which belong to no one -- like Christmas -- and will appear on everyone's display.
 		Marking an item as <strong>Recurring yearly</strong> will cause them to show up year after year.
 	</p>
-	<?php
-}
-?>
 <p>
 	<table class="partbox" width="100%" cellspacing="0">
 		<tr class="partboxtitle">

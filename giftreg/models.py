@@ -29,6 +29,8 @@ class Family(models.Model):
     FamilyMember = models.ManyToManyField(User)
 #    class Meta:
 #        db_table = u'Family'    
+    def __unicode__(self):
+        return self.FamilyName
 
 class Event(models.Model):
     #eventid = models.IntegerField(primary_key=True)
@@ -40,7 +42,8 @@ class Event(models.Model):
     recurring = models.BooleanField()
 #    class Meta:
 #        db_table = u'Event'
-
+    def __unicode__(self):
+        return self.description
 
 
 class Rank(models.Model):

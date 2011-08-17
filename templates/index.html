@@ -261,13 +261,13 @@
                             {% for event in events %}
                             <tr class="{% cycle 'evenrow' 'oddrow' %}" valign="top">
                                 <td>
-                                    {{ event.name }}
+                                    {{ event.description }}
                                 </td>
                                 <td>
                                     {{ event.event }}
                                 </td>
                                 <td>
-                                    {{ event.date }}
+                                    {{ event.eventdate }}
                                 </td>
                                 <td>
                                     {{ event.daysuntil }}

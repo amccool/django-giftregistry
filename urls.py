@@ -33,7 +33,11 @@ urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+    (r'^admin_tools/', include('admin_tools.urls')),
     
     (r'^currencies/', include('currencies.urls')),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT}),    
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', 
+        {'document_root': settings.STATIC_DOC_ROOT}),
+    
+    #(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_DOC_ROOT}),        
 )
