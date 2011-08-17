@@ -22,100 +22,90 @@ import forms
 @login_required
 def index(request):
 
-
-
-#    $query = "SELECT itemid, description, c.category, price, url, rendered, comment, image_filename FROM {$OPT["table_prefix"]}items i LEFT OUTER JOIN {$OPT["table_prefix"]}categories c ON c.categoryid = i.category LEFT OUTER JOIN {$OPT["table_prefix"]}ranks r ON r.ranking = i.ranking WHERE userid = " . $userid . " ORDER BY $sortby";
+    #    $query = "SELECT itemid, description, c.category, price, url, rendered, comment, image_filename FROM {$OPT["table_prefix"]}items i LEFT OUTER JOIN {$OPT["table_prefix"]}categories c ON c.categoryid = i.category LEFT OUTER JOIN {$OPT["table_prefix"]}ranks r ON r.ranking = i.ranking WHERE userid = " . $userid . " ORDER BY $sortby";
     itemsIWant = models.Item.objects.filter(User=models.User.objects.get(pk=request.user.id))
 
 
-#    $query = "SELECT u.userid, u.fullname, u.comment, u.list_stamp, COUNT(i.itemid) AS itemcount " .
-#                                "FROM {$OPT["table_prefix"]}shoppers s " .
-#                                "INNER JOIN {$OPT["table_prefix"]}users u ON u.userid = s.mayshopfor " .
-#                                "LEFT OUTER JOIN {$OPT["table_prefix"]}items i ON u.userid = i.userid " .
-#                                "WHERE s.shopper = " . $userid . " " .
-#                                    "AND pending = 0 " .
-#                                "GROUP BY u.userid, u.fullname, u.list_stamp " .
-#                                "ORDER BY u.fullname";
+    #    $query = "SELECT u.userid, u.fullname, u.comment, u.list_stamp, COUNT(i.itemid) AS itemcount " .
+    #                                "FROM {$OPT["table_prefix"]}shoppers s " .
+    #                                "INNER JOIN {$OPT["table_prefix"]}users u ON u.userid = s.mayshopfor " .
+    #                                "LEFT OUTER JOIN {$OPT["table_prefix"]}items i ON u.userid = i.userid " .
+    #                                "WHERE s.shopper = " . $userid . " " .
+    #                                    "AND pending = 0 " .
+    #                                "GROUP BY u.userid, u.fullname, u.list_stamp " .
+    #                                "ORDER BY u.fullname";
     peopleImShoppingFor = models.Shopper.objects.filter(shopperUser=models.User.objects.get(pk=request.user.id)).filter(pending=False)
 
-
-
-
-#                    /*$query = "SELECT u.userid, u.fullname, s.pending " .
-#                                "FROM {$OPT["table_prefix"]}users u " .
-#                                "LEFT OUTER JOIN {$OPT["table_prefix"]}shoppers s ON u.userid = s.mayshopfor " .
-#                                    "AND s.shopper = " . $userid . " " .
-#                                "WHERE u.userid <> " . $userid . " " .
-#                                    "AND (s.pending IS NULL OR s.pending = 1) " .
-#                                    "AND approved = 1 " .
-#                                "ORDER BY u.fullname";*/
-#                    $query = "SELECT DISTINCT u.userid, u.fullname, s.pending " .
-#                                "FROM {$OPT["table_prefix"]}memberships mymem " .
-#                                "INNER JOIN {$OPT["table_prefix"]}memberships others " .
-#                                    "ON others.familyid = mymem.familyid AND others.userid <> " . $userid . " " .
-#                                "INNER JOIN {$OPT["table_prefix"]}users u " .
-#                                    "ON u.userid = others.userid " .
-#                                "LEFT OUTER JOIN {$OPT["table_prefix"]}shoppers s " .
-#                                    "ON s.mayshopfor = others.userid AND s.shopper = " . $userid . " " .
-#                                "WHERE mymem.userid = " . $userid . " " .
-#                                    "AND (s.pending IS NULL OR s.pending = 1) " .
-#                                    "AND u.approved = 1 " .
-#                                "ORDER BY u.fullname";
+    #                    /*$query = "SELECT u.userid, u.fullname, s.pending " .
+    #                                "FROM {$OPT["table_prefix"]}users u " .
+    #                                "LEFT OUTER JOIN {$OPT["table_prefix"]}shoppers s ON u.userid = s.mayshopfor " .
+    #                                    "AND s.shopper = " . $userid . " " .
+    #                                "WHERE u.userid <> " . $userid . " " .
+    #                                    "AND (s.pending IS NULL OR s.pending = 1) " .
+    #                                    "AND approved = 1 " .
+    #                                "ORDER BY u.fullname";*/
+    #                    $query = "SELECT DISTINCT u.userid, u.fullname, s.pending " .
+    #                                "FROM {$OPT["table_prefix"]}memberships mymem " .
+    #                                "INNER JOIN {$OPT["table_prefix"]}memberships others " .
+    #                                    "ON others.familyid = mymem.familyid AND others.userid <> " . $userid . " " .
+    #                                "INNER JOIN {$OPT["table_prefix"]}users u " .
+    #                                    "ON u.userid = others.userid " .
+    #                                "LEFT OUTER JOIN {$OPT["table_prefix"]}shoppers s " .
+    #                                    "ON s.mayshopfor = others.userid AND s.shopper = " . $userid . " " .
+    #                                "WHERE mymem.userid = " . $userid . " " .
+    #                                    "AND (s.pending IS NULL OR s.pending = 1) " .
+    #                                    "AND u.approved = 1 " .
+    #                                "ORDER BY u.fullname";
    
-    peopleImNotShoppingFor = User.objects.all()
+    #peopleImNotShoppingFor = User.objects.all()
+    peopleImNotShoppingFor = models.User.objects..select_related().get(pk=request.user.id))
 
-
-
-#$query = "SELECT messageid, u.fullname, message, created " .
-#                                "FROM {$OPT["table_prefix"]}messages m " .
-#                                "INNER JOIN {$OPT["table_prefix"]}users u ON u.userid = m.sender " .
-#                                "WHERE m.recipient = " . $userid . " " .
-#                                    "AND m.isread = 0 " .
-#                                    "ORDER BY created DESC";
+    #$query = "SELECT messageid, u.fullname, message, created " .
+    #                                "FROM {$OPT["table_prefix"]}messages m " .
+    #                                "INNER JOIN {$OPT["table_prefix"]}users u ON u.userid = m.sender " .
+    #                                "WHERE m.recipient = " . $userid . " " .
+    #                                    "AND m.isread = 0 " .
+    #                                    "ORDER BY created DESC";
     
 
     messages = models.Message.objects.filter(recipient=models.User.objects.get(pk=request.user.id))
 
-
-
-#                    $query = "SELECT CONCAT(YEAR(CURDATE()),'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate)) AS DateThisYear, " .
-#                                "TO_DAYS(CONCAT(YEAR(CURDATE()),'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate))) AS ToDaysDateThisYear, " .
-#                                "CONCAT(YEAR(CURDATE()) + 1,'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate)) AS DateNextYear, " .
-#                                "TO_DAYS(CONCAT(YEAR(CURDATE()) + 1,'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate))) AS ToDaysDateNextYear, " .
-#                                "TO_DAYS(CURDATE()) AS ToDaysToday, " .
-#                                "TO_DAYS(eventdate) AS ToDaysEventDate, " .
-#                                "e.userid, u.fullname, description, eventdate, recurring, s.pending " .
-#                            "FROM {$OPT["table_prefix"]}events e " .
-#                            "LEFT OUTER JOIN {$OPT["table_prefix"]}users u ON u.userid = e.userid " .
-#                            "LEFT OUTER JOIN {$OPT["table_prefix"]}shoppers s ON s.mayshopfor = e.userid AND s.shopper = $userid ";
-#                    if ($OPT["show_own_events"])
-#                        $query .= "WHERE (pending = 0 OR pending IS NULL)";
-#                    else
-#                        $query .= "WHERE (e.userid <> $userid OR e.userid IS NULL) AND (pending = 0 OR pending IS NULL)";
-#                    $query .= "ORDER BY u.fullname";
+    #                    $query = "SELECT CONCAT(YEAR(CURDATE()),'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate)) AS DateThisYear, " .
+    #                                "TO_DAYS(CONCAT(YEAR(CURDATE()),'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate))) AS ToDaysDateThisYear, " .
+    #                                "CONCAT(YEAR(CURDATE()) + 1,'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate)) AS DateNextYear, " .
+    #                                "TO_DAYS(CONCAT(YEAR(CURDATE()) + 1,'-',MONTH(eventdate),'-',DAYOFMONTH(eventdate))) AS ToDaysDateNextYear, " .
+    #                                "TO_DAYS(CURDATE()) AS ToDaysToday, " .
+    #                                "TO_DAYS(eventdate) AS ToDaysEventDate, " .
+    #                                "e.userid, u.fullname, description, eventdate, recurring, s.pending " .
+    #                            "FROM {$OPT["table_prefix"]}events e " .
+    #                            "LEFT OUTER JOIN {$OPT["table_prefix"]}users u ON u.userid = e.userid " .
+    #                            "LEFT OUTER JOIN {$OPT["table_prefix"]}shoppers s ON s.mayshopfor = e.userid AND s.shopper = $userid ";
+    #                    if ($OPT["show_own_events"])
+    #                        $query .= "WHERE (pending = 0 OR pending IS NULL)";
+    #                    else
+    #                        $query .= "WHERE (e.userid <> $userid OR e.userid IS NULL) AND (pending = 0 OR pending IS NULL)";
+    #                    $query .= "ORDER BY u.fullname";
 
     event_threshold_int_days  = 90
     #events = models.Event.objects.filter(eventdate__gt = datetime.date.today() + datetime.timedelta(days=+event_threshold_int_days))
     events = models.Event.objects.all()
- 
 
 
-
-#$query = "SELECT u.userid, u.fullname " .
-#                                    "FROM {$OPT["table_prefix"]}shoppers s " .
-#                                    "INNER JOIN {$OPT["table_prefix"]}users u ON u.userid = s.shopper " .
-#                                    "WHERE s.mayshopfor = " . $userid . " " .
-#                                        "AND s.pending = 1 " .
-#                                    "ORDER BY u.fullname";
-#    
+    #$query = "SELECT u.userid, u.fullname " .
+    #                                    "FROM {$OPT["table_prefix"]}shoppers s " .
+    #                                    "INNER JOIN {$OPT["table_prefix"]}users u ON u.userid = s.shopper " .
+    #                                    "WHERE s.mayshopfor = " . $userid . " " .
+    #                                        "AND s.pending = 1 " .
+    #                                    "ORDER BY u.fullname";
+    #    
     peopleWhoWantToShopForMe = User.objects.all()
     
     
-#    $query = "SELECT userid, fullname, email, approved, initialfamilyid, familyname " .
-#                                    "FROM {$OPT["table_prefix"]}users u " .
-#                                    "LEFT OUTER JOIN {$OPT["table_prefix"]}families f ON f.familyid = u.initialfamilyid " .
-#                                    "WHERE approved = 0 " . 
-#                                    "ORDER BY fullname";
+    #    $query = "SELECT userid, fullname, email, approved, initialfamilyid, familyname " .
+    #                                    "FROM {$OPT["table_prefix"]}users u " .
+    #                                    "LEFT OUTER JOIN {$OPT["table_prefix"]}families f ON f.familyid = u.initialfamilyid " .
+    #                                    "WHERE approved = 0 " . 
+    #                                    "ORDER BY fullname";
     peopleWaitingApproval = User.objects.all()
     
     numItems = 0
