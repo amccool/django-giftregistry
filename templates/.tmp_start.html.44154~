@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}	
+	<div align="center">
+		<img src="/static/images/logo.gif" border="0" alt="Gift Registry" title="Gift Registry" />
+	</div>
+	<p>
+		<div align="center">
+			<a href="/accounts/login">Login</a>
+		</div>
+	</p>
+	<p>
+		<div align="center">
+			<a href="/accounts/register">Need an account?</a>
+		</div>
+	</p>
+	<p>
+		<div align="center">
+			<a href="/accounts/password/reset">Forgot your password?</a>
+		</div>
+	</p>
+{% endblock %}
