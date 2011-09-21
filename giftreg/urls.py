@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns
 from giftreg import views
 
 # maps url patterns to methods in views.py
@@ -7,6 +7,11 @@ urlpatterns = patterns(
     (r'^$', views.index),
     #(r'^giftreg/$', index),
     #(r'^index/$', index),
+
+    (r'^item/add/$', views.itemAdd),
+
+    (r'^shoppinglist/$', views.shoppinglist),
+    (r'^mylist/(?P<sortheader>\w*)$', views.mylist),
 
     (r'^categories/$', views.categories),
     
@@ -17,11 +22,6 @@ urlpatterns = patterns(
     (r'^ranks/rank/promote/(?P<rankid>\d+)$', views.rankPromote),
     (r'^ranks/rank/demote/(?P<rankid>\d+)$', views.rankDemote),
 
-
-    (r'^item/add/$', views.itemAdd),
-
-    (r'^shoppinglist/$', views.shoppinglist),
-    (r'^mylist/(?P<sortheader>\w*)$', views.mylist),
 
     (r'^event/$', views.event),
     (r'^event/event/add$', views.eventAdd),

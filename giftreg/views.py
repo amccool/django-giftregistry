@@ -58,7 +58,7 @@ def index(request):
     #                                "ORDER BY u.fullname";
    
     #peopleImNotShoppingFor = User.objects.all()
-    peopleImNotShoppingFor = models.User.objects..select_related().get(pk=request.user.id))
+    peopleImNotShoppingFor = models.User.objects.select_related().get(pk=request.user.id)
 
     #$query = "SELECT messageid, u.fullname, message, created " .
     #                                "FROM {$OPT["table_prefix"]}messages m " .
@@ -351,7 +351,8 @@ def eventAdd(request):
     if request.method == 'POST':
         form = forms.EventForm(request.POST)
         if form.is_valid():
-            new_family = form.save()
+            #new_family = form.save()
+            form.save(commit=True)
             return redirect('/giftReg/event')
     else:
         form = forms.EventForm()
@@ -365,7 +366,8 @@ def eventEdit(request, eventid):
         rank = models.Event.objects.get(pk=eventid)
         form = forms.EventForm(request.POST, instance=rank)
         if form.is_valid():
-            new_family = form.save()
+            #new_family = form.save()
+            form.save(commit=True)
             return redirect('/giftReg/event')
     else:
         rank = models.Family.objects.get(pk=eventid)

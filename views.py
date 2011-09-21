@@ -1,11 +1,11 @@
 # Create your views here.
-from django.template.loader import get_template
-from django.template import Template, Context
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+#from django.template.loader import get_template
+#from django.template import Template, Context
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.contrib.auth.decorators import login_required
+#from django.contrib.auth.decorators import login_required
 
-import datetime
+#import datetime
 
 def index(request):
     #t = Template("index.html")
