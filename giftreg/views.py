@@ -2,7 +2,7 @@
 #from django.template.loader import get_template
 #from django.template import Template, Context
 #from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response, redirect, HttpResponseRedirect
+from django.shortcuts import render_to_response, redirect
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
@@ -10,11 +10,11 @@ from django.forms.models import modelformset_factory
 from django.template import RequestContext
 from django.contrib.auth.decorators import permission_required
 
-from django.db.models import Avg, Max, Min, Count
+from django.db.models import Count #, Avg, Max, Min, 
 
 from django.core import serializers
 
-import datetime
+#import datetime
 import models
 import forms
 
@@ -192,7 +192,8 @@ def rankAdd(request):
     if request.method == 'POST':
         form = forms.RankForm(request.POST)
         if form.is_valid():
-            new_rank = form.save()
+            #new_rank = form.save()
+            form.save(commit=True)
             return redirect('/giftReg/ranks')
     else:
         form = forms.RankForm()
@@ -206,7 +207,8 @@ def rankEdit(request, rankid):
         rank = models.Rank.objects.get(pk=rankid)
         form = forms.RankForm(request.POST, instance=rank)
         if form.is_valid():
-            new_rank = form.save()
+            #new_rank = form.save()
+            form.save(commit=True)
             return redirect('/giftReg/ranks')
     else:
         rank = models.Rank.objects.get(pk=rankid)
@@ -417,7 +419,8 @@ def familyAdd(request):
     if request.method == 'POST':
         form = forms.FamilyForm(request.POST)
         if form.is_valid():
-            new_family = form.save()
+            #new_family = form.save()
+            form.save(commit=True)
             return redirect('/giftReg/families')
     else:
         form = forms.FamilyForm()
@@ -431,7 +434,8 @@ def familyEdit(request, familyid):
         rank = models.Family.objects.get(pk=familyid)
         form = forms.FamilyForm(request.POST, instance=rank)
         if form.is_valid():
-            new_family = form.save()
+            #new_family = form.save()
+            form.save(commit=True)
             return redirect('/giftReg/families')
     else:
         rank = models.Family.objects.get(pk=familyid)
